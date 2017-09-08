@@ -1,0 +1,16 @@
+extends layout
+block content
+  div
+    h1 Rejestruj
+    form(method='POST', action='/users/register')
+      #form-group
+        label Imię:
+        input.form-control(name='name', type='text')
+      #form-group
+        label Login:
+        input.form-control(name='username', type='text')
+      #form-group
+        label Hasło:
+        input.form-control(name='password', type='password')
+      br
+      input.btn.btn-primary(type='submit', value='Submit')

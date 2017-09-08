@@ -1,10 +1,17 @@
 const bodyParser = require('body-parser')
 const path = require('path')
 const http = require('http')
+const mongoose = require('mongoose');
+const config = require('./config/database');
 
 const express = require('express')
 const app = express()
 
+
+//Połączenie z bazą
+mongoose.connect(config.database,{useMongoClient: true},()=>{
+  console.log('Połączono z bazą');
+})
 //Silnik szablonów
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
@@ -17,12 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', (req, res)=>{
   res.render('index')
 })
-app.get('/users/login', (req, res)=>{
-  res.send('Do zrobienia Logowanie')
-})
-app.get('/users/register', (req, res)=>{
-  res.send('Do zrobienia Rejestracja')
-})
+//Routing
+app.use('/users', require('./routes/users'))
 
 app.post('/', (req, res)=>{
   http.request({
