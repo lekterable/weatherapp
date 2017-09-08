@@ -3,6 +3,8 @@ const path = require('path')
 const http = require('http')
 const mongoose = require('mongoose');
 const config = require('./config/database');
+const passport = require('passport');
+const session = require('express-session');
 
 const express = require('express')
 const app = express()
@@ -20,9 +22,33 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 //Folder publiczny
 app.use(express.static(path.join(__dirname, 'public')))
+//Express session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}))
+//Passport config
+require('./config/passport')(passport)
+
+//Passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.get('*', (req, res, next)=>{
+  res.locals.user = req.user || null
+  next()
+})
 
 app.get('/', (req, res)=>{
+  if(req.session.data)
+  res.render('index', {
+    city: req.session.data.city,
+    weather : req.session.data.weather
+  })
+  else
   res.render('index')
+
 })
 //Routing
 app.use('/users', require('./routes/users'))
@@ -38,10 +64,11 @@ app.post('/', (req, res)=>{
     })
     weather.on('end', ()=>{
       data = JSON.parse(weatherData)
-      res.render('index', {
+      req.session.data = {
         weather:data.main.temp,
-        city: req.body.city
-      })
+        city: req.body.city[0].toUpperCase()+req.body.city.slice(1)
+      }
+      res.redirect('/')
     })
   }).end()
 })

@@ -19,6 +19,8 @@ html
               a(href='/') Strona Główna
           ul.nav.navbar-nav.navbar-right
             if user
+              li
+                a(href='#') Witaj, #{user.name}
               li 
                 a(href='/users/logout') Wyloguj
             else

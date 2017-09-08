@@ -9,8 +9,8 @@ block content
             i openweathermap.org
           br 
         else
-          h1.text-center W #{city} jest teraz #{weather}&#8451;
+          h1.text-center W mieście #{city} jest teraz #{weather}&#8451;
+          h3.text-center Co jeszcze mogę dla Ciebie zrobić?
       div.input-group.col-sm-4.col-sm-offset-4
-        if !weather
-          span.input-group-addon Wybierz miasto
-          input(type="text", name="city").form-control
+        span.input-group-addon Wybierz miasto
+        input(type="text", name="city").form-control
