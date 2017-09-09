@@ -8,17 +8,19 @@ block content
         div.panel-heading
           h1.panel-title Twoje dane:
         div.panel-body
-          strong Imię:
-          i  #{user.name}
-          button.btn.btn-primary.pull-right Edytuj
-          hr
-          strong Login:
-          i  #{user.username}
-          hr
-          strong Miasto:
-          if user.city
-            i  #{user.city}
-          else
-            i  Uzupełnij swoje miasto
-            button.btn.btn-primary.pull-right Edytuj
+          form(method='POST', action='/users/profile')
+            strong Login:
+            i  #{user.username}
             hr
+            #form-group
+              label Imię:
+              input.form-control(type='text', value = user.name, name='name')
+            hr
+            #form-group
+              label Miasto:
+              if user.city
+                input.form-control(type='text', value = user.city, name='city')
+              else
+                input.form-control(type='text', value = 'Uzupełnij swoje miasto', name='city')
+              hr
+            input.btn.btn-primary(type='submit', value='Edytuj')

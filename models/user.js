@@ -19,4 +19,4 @@ let UserSchema = mongoose.Schema({
   }
 })
 
-let User = module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('User', UserSchema)
