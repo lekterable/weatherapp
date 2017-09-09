@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const passport = require('passport');
+const passport = require('passport')
+const bcrypt = require('bcryptjs')
 
 let User = require('../models/user')
 
+//Rejestracja
 router.get('/register', (req, res)=>{
   if(res.locals.user)
     res.redirect('/')
@@ -21,14 +23,24 @@ router.post('/register', (req, res)=>{
       username: username,
       password: password
   })
-  newUser.save((err)=>{
-    if (err)
-      throw err
-    else
-    res.redirect('/login')
+  bcrypt.genSalt(10,(err,salt)=>{
+    bcrypt.hash(newUser.password, salt, (err, hash)=>{
+      if(err)
+        throw err
+      else {
+        newUser.password = hash
+        newUser.save((err)=>{
+          if (err)
+            throw err
+          else
+          res.redirect('/users/login')
+        })
+      }
+    })
   })
 })
 
+//Logowanie
 router.get('/login', (req, res)=>{
   if(res.locals.user)
     res.redirect('/')
@@ -42,8 +54,19 @@ router.post('/login', (req, res, next)=>{
     failureFlash:true
   })(req, res, next)
 })
+
+//Profil
+router.get('/profile', (req, res)=>{
+  if(!res.locals.user)
+    res.redirect('/')
+  else
+    res.render('profile')
+})
+
+//Wylogowywanie
 router.get('/logout', (req, res)=>{
   req.logout()
   res.redirect('/users/login')
 })
+
 module.exports = router

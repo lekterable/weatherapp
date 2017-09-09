@@ -14,7 +14,7 @@ let UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  lastCity:{
+  city:{
     type: String
   }
 })

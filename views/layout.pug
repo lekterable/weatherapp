@@ -20,7 +20,7 @@ html
           ul.nav.navbar-nav.navbar-right
             if user
               li
-                a(href='#') Witaj, #{user.name}
+                a(href='/users/profile') Witaj, #{user.name}
               li 
                 a(href='/users/logout') Wyloguj
             else
