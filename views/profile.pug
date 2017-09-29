@@ -21,6 +21,6 @@ block content
               if user.city
                 input.form-control(type='text', value = user.city, name='city')
               else
-                input.form-control(type='text', value = 'Uzupełnij swoje miasto', name='city')
+                input.form-control(type='text', value = 'Uzupełnij swoje miasto', name='city' onfocus='clearValue(this)')
               hr
             input.btn.btn-primary(type='submit', value='Edytuj')

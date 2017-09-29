@@ -42,7 +42,7 @@ router.post('/register', (req, res)=>{
           newUser.password = hash
           newUser.save((err)=>{
             if (err)
-              throw err
+              req.flash('danger', 'Użytkownik już istnieje')
             else{
               req.flash('success', 'Zarejestrowano pomyślnie, możesz się zalogować')
               res.redirect('/users/login')
@@ -63,12 +63,21 @@ router.get('/login', (req, res)=>{
     res.render('login')
 })
 router.post('/login', (req, res, next)=>{
+  req.checkBody('username', 'Nazwa użytkownika jest wymagana').notEmpty()
+  req.checkBody('password', 'Hasło jest wymagane').notEmpty()
+  let errors = req.validationErrors()
+  if(errors){
+    res.render('login', {
+      errors: errors
+    })
+  }
+  else {
   passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/users/login',
     failureFlash:true
   })(req, res, next)
-})
+}})
 
 //Profil
 router.get('/profile', ensureAuthenticated, (req, res)=>{
