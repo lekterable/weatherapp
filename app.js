@@ -90,15 +90,16 @@ app.post('/', (req, res)=>{
     })
     weather.on('end', ()=>{
       data = JSON.parse(weatherData)
-      req.session.data = {
-        weather: {
-          temp: data.main.temp,
-          desc: data.weather[0].description,
-          icon: data.weather[0].icon
-        },
-        country: data.sys.country,
-        city: data.name[0].toUpperCase()+data.name.slice(1)
-      }
+      if(data.cod=='200')
+        req.session.data = {
+          weather: {
+            temp: data.main.temp,
+            desc: data.weather[0].description,
+            icon: data.weather[0].icon
+          },
+          country: data.sys.country,
+          city: data.name[0].toUpperCase()+data.name.slice(1)
+        }
       res.redirect('/')
     })
   }).end()
