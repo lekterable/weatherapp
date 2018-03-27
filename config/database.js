@@ -1,4 +1,4 @@
 module.exports = {
-  database: process.env.MONGODB_URI || 'mongodb://localhost:27017/weatherapp',
-  secret: 'yoursecret'
+  database: process.env.MONGODB_URI || 'mongodb://localhost/weatherapp',
+  secret: 'sekrecik'
 }

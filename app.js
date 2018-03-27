@@ -65,6 +65,10 @@ app.get('*', (req, res, next)=>{
   next()
 })
 
+//Routing
+app.use('/users', require('./routes/users'))
+
+//Strona główna
 app.get('/', (req, res)=>{
   if(req.session.data)
   res.render('index', {
@@ -74,10 +78,7 @@ app.get('/', (req, res)=>{
   })
   else
   res.render('index')
-
 })
-//Routing
-app.use('/users', require('./routes/users'))
 
 app.post('/', (req, res)=>{
   http.request({
@@ -105,6 +106,7 @@ app.post('/', (req, res)=>{
   }).end()
 })
 
+//Serwer
 app.listen(process.env.PORT || 3000, ()=>{
   console.log('Serwer uruchomiony na porcie 3000')
 })
